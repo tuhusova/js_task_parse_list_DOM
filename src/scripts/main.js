@@ -1,28 +1,20 @@
 'use strict';
 
+// Функция для сортировки сотрудников по зарплате
 const sortEmployeesBySalary = function (selector) {
-  // Получаем все элементы списка
+  // Получаем все элементы списка по переданному селектору
   const employeeItems = document.querySelectorAll(selector);
 
   // Преобразуем NodeList в массив и сортируем его по зарплате
-  const sortedEmployees = Array.from(employeeItems).sort((a, b) => {
+  const sortedEmployee = Array.from(employeeItems).sort((a, b) => {
     // Извлекаем зарплату из атрибутов данных и преобразуем в число
     const salaryA = parseInt(a.dataset.salary.replace(/[$,]/g, ''), 10);
-    // Удаляем $ и запятые
     const salaryB = parseInt(b.dataset.salary.replace(/[$,]/g, ''), 10);
 
     return salaryB - salaryA; // Сортируем по убыванию
   });
 
-  // Очищаем существующий список и добавляем отсортированные элементы
-  const employeeList = document.querySelector('ul');
-
-  employeeList.innerHTML = ''; // Очищаем существующий список
-
-  // Добавляем отсортированные элементы обратно в список
-  sortedEmployees.forEach((employee) => {
-    employeeList.appendChild(employee); // Добавляем элемент
-  });
+  return sortedEmployee; // Возвращаем отсортированный массив сотрудников
 };
 
 // Функция для получения массива объектов сотрудников
@@ -44,6 +36,18 @@ const getEmployeeArray = function (selector) {
 // Основной код
 const employeeListSelector = 'ul li';
 
-sortEmployeesBySalary(employeeListSelector); // Сортируем сотрудников
+// Сортируем сотрудников и получаем отсортированный массив
+const sortedEmployees = sortEmployeesBySalary(employeeListSelector);
 
+// Очищаем существующий список
+const employeeList = document.querySelector('ul');
+
+employeeList.innerHTML = ''; // Очищаем существующий список
+
+// Добавляем отсортированные элементы обратно в список
+sortedEmployees.forEach((employee) => {
+  employeeList.appendChild(employee); // Добавляем элемент в DOM
+});
+
+sortEmployeesBySalary(employeeListSelector);
 getEmployeeArray(employeeListSelector);
