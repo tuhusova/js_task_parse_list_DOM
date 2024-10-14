@@ -1,11 +1,11 @@
 'use strict';
 
-function sortEmployeesBySalary() {
+const sortEmployeesBySalary = function (selector) {
   // Получаем все элементы списка
-  const employeeItems = document.querySelectorAll('ul li');
+  const employeeItems = document.querySelectorAll(selector);
 
   // Преобразуем NodeList в массив и сортируем его по зарплате
-  const sortEmpl = Array.from(employeeItems).sort((a, b) => {
+  const sortedEmployees = Array.from(employeeItems).sort((a, b) => {
     // Извлекаем зарплату из атрибутов данных и преобразуем в число
     const salaryA = parseInt(a.dataset.salary.replace(/[$,]/g, ''), 10);
     // Удаляем $ и запятые
@@ -15,17 +15,20 @@ function sortEmployeesBySalary() {
   });
 
   // Очищаем существующий список и добавляем отсортированные элементы
-  const emplList = document.querySelector('ul');
+  const employeeList = document.querySelector('ul');
 
-  emplList.innerHTML = ''; // Очищаем существующий список
-  // Добавляем отсортированные элем
-  sortEmpl.forEach((employee) => emplList.appendChild(employee));
-}
+  employeeList.innerHTML = ''; // Очищаем существующий список
+
+  // Добавляем отсортированные элементы обратно в список
+  sortedEmployees.forEach((employee) => {
+    employeeList.appendChild(employee); // Добавляем элемент
+  });
+};
 
 // Функция для получения массива объектов сотрудников
-function getEmployeeArray() {
-  // Получаем все элементы списка
-  const employeeItems = document.querySelectorAll('ul li');
+const getEmployeeArray = function (selector) {
+  // Получаем все элементы списка по переданному селектору
+  const employeeItems = document.querySelectorAll(selector);
 
   // Преобразуем NodeList в массив объектов
   const employees = Array.from(employeeItems).map((item) => ({
@@ -35,8 +38,12 @@ function getEmployeeArray() {
     age: parseInt(item.dataset.age, 10),
   }));
 
-  return employees;
-}
+  return employees; // Возвращаем массив сотрудников
+};
 
-sortEmployeesBySalary();
-getEmployeeArray();
+// Основной код
+const employeeListSelector = 'ul li';
+
+sortEmployeesBySalary(employeeListSelector); // Сортируем сотрудников
+
+getEmployeeArray(employeeListSelector);
