@@ -1,54 +1,41 @@
 'use strict';
 
 // Функция для сортировки сотрудников по зарплате
-const sortEmployeesBySalary = function (selector) {
-  const employees = document.querySelectorAll(selector);
-  // Получаем все элементы списка по переданному селектору
-  const employeeItems = employees;
-
-  // Преобразуем NodeList в массив и сортируем его по зарплате
-  const sortedEmployee = Array.from(employeeItems).sort((a, b) => {
-    // Извлекаем зарплату из атрибутов данных и преобразуем в число
-    const salaryA = parseInt(a.dataset.salary.replace(/[$,]/g, ''), 10);
-    const salaryB = parseInt(b.dataset.salary.replace(/[$,]/g, ''), 10);
-
-    return salaryB - salaryA; // Сортируем по убыванию
-  });
-
-  return sortedEmployee; // Возвращаем отсортированный массив сотрудников
+const sortEmployeesBySalary = function (employees) {
+  return employees.sort((a, b) => b.salary - a.salary);
 };
 
-// Функция для получения массива объектов сотрудников
 const getEmployeeArray = function (selector) {
   // Получаем все элементы списка по переданному селектору
   const employeeItems = document.querySelectorAll(selector);
 
-  // Преобразуем NodeList в массив объектов
-  const employees = Array.from(employeeItems).map((item) => ({
+  // Преобразуем NodeList в массив объектов сотрудников
+  return Array.from(employeeItems).map((item) => ({
     name: item.textContent.trim(),
     position: item.dataset.position,
-    salary: item.dataset.salary,
+    // Преобразуем зарплату в число
+    salary: parseInt(item.dataset.salary.replace(/[$,]/g, ''), 10),
     age: parseInt(item.dataset.age, 10),
+    element: item, // Сохраняем сам HTML элемент для дальнейшего использования
   }));
-
-  return employees; // Возвращаем массив сотрудников
 };
 
 // Основной код
 const employeeListSelector = 'ul li';
 
-// Сортируем сотрудников и получаем отсортированный массив
-const sortedEmployees = sortEmployeesBySalary(employeeListSelector);
+// Получаем массив сотрудников
+const employeeArray = getEmployeeArray(employeeListSelector);
+
+// Сортируем сотрудников по зарплате
+const sortedEmployees = sortEmployeesBySalary(employeeArray);
 
 // Очищаем существующий список
 const employeeList = document.querySelector('ul');
 
-employeeList.innerHTML = ''; // Очищаем существующий список
+employeeList.innerHTML = ''; // Очищаем список
 
-// Добавляем отсортированные элементы обратно в список
+// Добавляем отсортированные элементы обратно в DOM
 sortedEmployees.forEach((employee) => {
-  employeeList.appendChild(employee); // Добавляем элемент в DOM
+  // Используем сохранённый HTML элемент
+  employeeList.appendChild(employee.element);
 });
-
-sortEmployeesBySalary(employeeListSelector);
-getEmployeeArray(employeeListSelector);
