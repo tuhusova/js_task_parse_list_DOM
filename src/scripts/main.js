@@ -2,8 +2,9 @@
 
 // Функция для сортировки сотрудников по зарплате
 const sortEmployeesBySalary = function (selector) {
+  const employees = document.querySelectorAll(selector);
   // Получаем все элементы списка по переданному селектору
-  const employeeItems = document.querySelectorAll(selector);
+  const employeeItems = employees;
 
   // Преобразуем NodeList в массив и сортируем его по зарплате
   const sortedEmployee = Array.from(employeeItems).sort((a, b) => {
